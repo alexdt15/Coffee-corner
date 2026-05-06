@@ -113,18 +113,18 @@ Rutas públicas (whitelist en `proxy.ts`): `/login`, `/api/auth/login`. El match
 
 ### Fase 1 — MVP
 
-- [ ] `lib/validation.ts` con schemas Zod compartidos para `Roaster` y `Coffee`
-- [ ] API routes (todas filtradas por `SOLO_USER_ID`):
-  - [ ] `GET/POST /api/roasters`
-  - [ ] `GET/PATCH/DELETE /api/roasters/[id]`
-  - [ ] `GET/POST /api/coffees` (con `?roasterId=` opcional)
-  - [ ] `GET/PATCH/DELETE /api/coffees/[id]`
-- [ ] Hooks TanStack Query: `useRoasters`, `useRoaster(id)`, `useCoffees({ roasterId? })`, `useCoffee(id)`, y mutations correspondientes
-- [ ] Vistas:
-  - [ ] `/` — grid de tostadores (card con nº cafés + rating medio)
-  - [ ] `/roasters/[id]` — listado de cafés del tostador
-  - [ ] `/coffees/[id]` — detalle completo + botón "Ver en la web"
-  - [ ] `/roasters/new`, `/coffees/new` — formularios (RHF + Zod)
-  - [ ] Edición (in-place o `/coffees/[id]/edit` — decidir)
-- [ ] Layout con header (link a home + botón logout)
-- [ ] Estados vacíos y de error cuidados
+- [x] `lib/validation.ts` con schemas Zod compartidos para `Roaster` y `Coffee`
+- [x] API routes (todas filtradas por `SOLO_USER_ID`):
+  - [x] `GET/POST /api/roasters`
+  - [x] `GET/PATCH/DELETE /api/roasters/[id]`
+  - [x] `GET/POST /api/coffees` (con `?roasterId=` opcional)
+  - [x] `GET/PATCH/DELETE /api/coffees/[id]`
+- [x] Hooks TanStack Query: `useRoasters`, `useRoaster(id)`, `useCoffees({ roasterId? })`, `useCoffee(id)`, y mutations correspondientes
+- [x] Vistas:
+  - [x] `/` — grid de tostadores (card con nº cafés + rating medio)
+  - [x] `/roasters/[id]` — listado de cafés del tostador
+  - [x] `/coffees/[id]` — detalle completo + botón "Ver en la web"
+  - [x] `/roasters/new`, `/coffees/new` — formularios (RHF + Zod)
+  - [x] Edición (in-place o `/coffees/[id]/edit` — decidir)
+- [x] Layout con header (link a home + botón logout)
+- [x] Estados vacíos y de error cuidados
