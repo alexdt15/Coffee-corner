@@ -94,20 +94,22 @@ Rutas públicas (whitelist en `proxy.ts`): `/login`, `/api/auth/login`. El match
 
 ## Roadmap
 
-1. **Fase 0 — Setup** (en curso): bootstrap, shadcn, Drizzle, providers, proxy, primera migración a Neon, deploy a Vercel.
+1. **Fase 0 — Setup** (completada): bootstrap, shadcn, Drizzle, providers, proxy, primera migración a Neon, deploy a Vercel.
 2. **Fase 1 — MVP**: CRUD vía API routes; vistas `/`, `/roasters/[id]`, `/coffees/[id]`; formularios.
 3. **Fase 2 — UX**: búsqueda, filtros (rating/proceso/origen), orden, skeletons, toasts.
 4. **Fase 3**: fotos del paquete (Vercel Blob), stats, scraping de stock para tostadores top.
 
 ## TODO
 
-### Cerrando Fase 0 (bloqueado por acciones del usuario)
+### Cerrando Fase 0
 
-- [ ] Crear cuenta + proyecto en Neon, copiar `DATABASE_URL` a `.env.local`
-- [ ] Definir `APP_PASSWORD` y generar `COOKIE_SECRET` (`openssl rand -base64 32`)
-- [ ] `npm run db:generate` → revisar SQL en `db/migrations/` → `npm run db:push`
-- [ ] Smoke test: `npm run dev` → probar flujo de login → home carga
-- [ ] Push a repo GitHub + conectar Vercel + replicar env vars en Vercel
+- [x] Crear cuenta + proyecto en Neon, copiar `DATABASE_URL` a `.env.local`
+- [x] Definir `APP_PASSWORD` y generar `COOKIE_SECRET` (`openssl rand -base64 32`)
+- [x] `drizzle.config.ts` corregido para leer `.env.local` (en lugar de `.env`)
+- [x] `npm run db:generate` → `npm run db:push` — schema aplicado en Neon
+- [x] Smoke test: login funciona, home carga correctamente
+- [x] Push a repo GitHub
+- [x] Conectar repo a Vercel + añadir las 3 env vars en el dashboard de Vercel
 
 ### Fase 1 — MVP
 
