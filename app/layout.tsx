@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { Header } from '@/components/header'
+import { BottomNav } from '@/components/bottom-nav'
 import { Toaster } from '@/components/ui/sonner'
 
 const fraunces = Fraunces({
@@ -40,9 +41,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>
           <Header />
-          <main className="mx-auto w-full max-w-2xl px-4 py-6 flex-1">
+          <main className="mx-auto w-full max-w-2xl px-4 py-6 pb-24 flex-1">
             {children}
           </main>
+          <BottomNav />
           <Toaster />
         </Providers>
       </body>

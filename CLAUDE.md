@@ -101,30 +101,65 @@ Rutas públicas (whitelist en `proxy.ts`): `/login`, `/api/auth/login`. El match
 
 ## TODO
 
-### Cerrando Fase 0
+### Fase 2 — UX
 
-- [x] Crear cuenta + proyecto en Neon, copiar `DATABASE_URL` a `.env.local`
-- [x] Definir `APP_PASSWORD` y generar `COOKIE_SECRET` (`openssl rand -base64 32`)
-- [x] `drizzle.config.ts` corregido para leer `.env.local` (en lugar de `.env`)
-- [x] `npm run db:generate` → `npm run db:push` — schema aplicado en Neon
-- [x] Smoke test: login funciona, home carga correctamente
-- [x] Push a repo GitHub
-- [x] Conectar repo a Vercel + añadir las 3 env vars en el dashboard de Vercel
+Decisiones tomadas:
 
-### Fase 1 — MVP
+- **Navegación**: bottom nav fija con dos tabs (Cafés / Tostadores). Cafés es el tab por defecto.
+- **URLs**: `/` → tab Cafés (lista plana ordenada por rating desc). `/roasters` → tab Tostadores. Detalles igual que Fase 1.
+- **Búsqueda**: barra global persistente en el header, aplica al tab activo. Busca en todas las columnas de texto que tengan sentido (nombre, origen, variedad, proceso, tasting_notes, review, country, notes).
+- **Filtros**: botón "Filtros" abre un sheet (bottom). Chips multi-select de origen, proceso y rating mínimo. Valores se rellenan dinámicamente desde el dataset completo del usuario.
+- **Filtrado**: en cliente de momento (dataset pequeño). Estado en URL params (`?q=…&origin=…&process=…&minRating=…`).
+- **Estética**: inspiración ibrew.coffee — foco en spacing generoso, tipografía con buen tracking, alineación icono-texto cuidada. Dark mode queda para más adelante.
+- **Avatar de café**: placeholder reservado con la dimensión final del paquete (Fase 3 lo sustituye por foto real).
+- **Toasts**: sonner.
+- **Skeletons** en listados y detalle. Spinner solo en submits.
 
-- [x] `lib/validation.ts` con schemas Zod compartidos para `Roaster` y `Coffee`
-- [x] API routes (todas filtradas por `SOLO_USER_ID`):
-  - [x] `GET/POST /api/roasters`
-  - [x] `GET/PATCH/DELETE /api/roasters/[id]`
-  - [x] `GET/POST /api/coffees` (con `?roasterId=` opcional)
-  - [x] `GET/PATCH/DELETE /api/coffees/[id]`
-- [x] Hooks TanStack Query: `useRoasters`, `useRoaster(id)`, `useCoffees({ roasterId? })`, `useCoffee(id)`, y mutations correspondientes
-- [x] Vistas:
-  - [x] `/` — grid de tostadores (card con nº cafés + rating medio)
-  - [x] `/roasters/[id]` — listado de cafés del tostador
-  - [x] `/coffees/[id]` — detalle completo + botón "Ver en la web"
-  - [x] `/roasters/new`, `/coffees/new` — formularios (RHF + Zod)
-  - [x] Edición (in-place o `/coffees/[id]/edit` — decidir)
-- [x] Layout con header (link a home + botón logout)
-- [x] Estados vacíos y de error cuidados
+#### Bloque A — Fundamentos visuales ✓
+
+- [x] Moodboard textual aprobado (paleta, tipografía, spacing, radius)
+- [x] Tokens en `globals.css` (Tailwind 4 CSS-first, sobre los de shadcn) — paleta terracota/cream, `--radius: 1rem`
+- [x] Tipografía cargada con `next/font` → CSS variables — Fraunces (`--font-heading`) + Geist (`--font-sans`)
+
+#### Bloque B — App shell ✓
+
+- [x] Restructura: `/` → tab Cafés, `/roasters` → tab Tostadores; back-links corregidos
+- [x] Layout: header sticky + main `pb-24` + `<BottomNav>` fija con `safe-area-inset-bottom`
+- [x] `<BottomNav>`: dot terracota + `scale-110` + `font-semibold` en tab activo (opción C)
+- [x] Header: dos filas — brand/logout + búsqueda debounceada 250ms con URL params; botón Filtros solo en `/`
+
+#### Bloque C — Tab Cafés ✓
+
+- [x] Estado de search/filtros en URL (`?q=…&origin=…&process=…&minRating=…`), debounce 250ms
+- [x] `useCoffeeFilterOptions()` — devuelve valores únicos del dataset completo (no del filtrado)
+- [x] Filtrado en cliente sobre `useCoffees()` completo; lógica extraída en `filterCoffees()`
+- [x] `<FilterSheet>` (Sheet `side="bottom"`): secciones Origen / Proceso / Rating mínimo, chips multi-select, "Limpiar" + "Ver resultados"
+- [x] Badge en botón Filtros con conteo de filtros activos + chips removibles inline
+- [x] `<CoffeeCard>` rediseñada: avatar `CoffeeAvatarPlaceholder` (gradiente cálido único por ID), nombre, tostador, pills origen/proceso, rating con estrella terracota
+- [x] `<CoffeeAvatarPlaceholder>` reutilizable — gradiente warm hue derivado del ID del café
+- [x] Lista ordenada por rating desc (sin rating al final); header "Tus cafés" + botón "Añadir"
+- [x] Skeletons (`CoffeeCardSkeleton`) con `animate-pulse`
+- [x] Tres estados vacíos diferenciados: sin cafés / sin resultados de búsqueda / filtros sin matches
+- [x] `/coffees/new` acepta entrada sin `?roasterId=`: selector de tostador dinámico (auto-selecciona si hay uno solo); mensaje guiado si no hay tostadores
+
+#### Bloque D — Tab Tostadores
+
+- [ ] `<RoasterCard>` restyling para coherencia visual
+- [ ] Búsqueda aplicada (mismo `q`, sobre nombre / país / notes)
+- [ ] Skeletons + estado vacío
+
+#### Bloque E — Detalles
+
+- [ ] `/coffees/[id]` rediseño: hero con avatar grande, jerarquía (nombre, tostador, rating), notas como pills, review destacado, CTA "Ver en la web"
+- [ ] `/roasters/[id]` restyling mínimo: header del tostador + lista usando la misma `<CoffeeCard>`
+
+#### Bloque F — Polish
+
+- [ ] Forms (RHF + shadcn) — pase de consistencia visual con los nuevos tokens
+- [ ] Toasts en todas las mutations (create / update / delete) con copy en español
+- [ ] Spinner en submits + estados disabled correctos
+- [ ] QA mobile: viewport real, safe-areas, scroll, bottom nav no tape contenido
+
+#### Pendientes / Refinements
+
+- [ ] **Crear tostador desde el formulario de nuevo café** — planificar en próxima sesión. Flujo propuesto: botón "+ Nuevo tostador" junto al selector, abre un modal/sheet inline con el `RoasterForm`, y al crear redirige de vuelta al formulario de café con el nuevo tostador pre-seleccionado.

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Roaster, Coffee } from '@/db/schema'
 import type { RoasterInsert, RoasterPatch, CoffeeInsert, CoffeePatch } from '@/lib/validation'
@@ -129,4 +130,14 @@ export function useDeleteCoffee() {
       qc.invalidateQueries({ queryKey: ['roasters'] })
     },
   })
+}
+
+export function useCoffeeFilterOptions() {
+  const { data: coffees } = useCoffees()
+  return useMemo(() => {
+    if (!coffees) return { origins: [], processes: [] }
+    const origins = [...new Set(coffees.map((c) => c.origin).filter(Boolean))] as string[]
+    const processes = [...new Set(coffees.map((c) => c.process).filter(Boolean))] as string[]
+    return { origins, processes }
+  }, [coffees])
 }

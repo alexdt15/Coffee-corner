@@ -13,7 +13,7 @@ export default function NewRoasterPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/roasters" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ChevronLeft className="size-4" />
         Tostadores
       </Link>

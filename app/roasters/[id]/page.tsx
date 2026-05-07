@@ -28,7 +28,7 @@ export default function RoasterPage() {
     try {
       await deleteRoaster.mutateAsync(id)
       toast.success('Tostador eliminado')
-      router.push('/')
+      router.push('/roasters')
     } catch {
       toast.error('Error al eliminar el tostador')
       setConfirming(false)
@@ -57,7 +57,7 @@ export default function RoasterPage() {
   return (
     <div className="space-y-6">
       {/* Back */}
-      <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/roasters" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ChevronLeft className="size-4" />
         Tostadores
       </Link>
