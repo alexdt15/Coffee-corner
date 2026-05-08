@@ -3,12 +3,11 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import { ChevronLeft, Plus, Pencil, Trash2, ExternalLink, Star } from 'lucide-react'
+import { ChevronLeft, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import { CoffeeCard, CoffeeCardSkeleton } from '@/components/coffee-card'
 import { cn } from '@/lib/utils'
 import { useRoaster, useCoffees, useDeleteRoaster } from '@/lib/hooks'
 
@@ -37,13 +36,15 @@ export default function RoasterPage() {
 
   if (loadingRoaster) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-8">
         <Skeleton className="h-5 w-24" />
-        <Skeleton className="h-8 w-48" />
-        <Skeleton className="h-4 w-32" />
-        <div className="space-y-3 pt-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-20 w-full rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <div className="space-y-3">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <CoffeeCardSkeleton key={i} />
           ))}
         </div>
       </div>
@@ -55,45 +56,49 @@ export default function RoasterPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Back */}
-      <Link href="/roasters" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ChevronLeft className="size-4" />
-        Tostadores
-      </Link>
+    <div className="space-y-8">
+      {/* Nav row */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/roasters"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ChevronLeft className="size-4" />
+          Tostadores
+        </Link>
+
+        <div className="flex items-center gap-1">
+          <Link
+            href={`/roasters/${id}/edit`}
+            className={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}
+          >
+            <Pencil className="size-3.5" />
+          </Link>
+          {confirming ? (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="destructive"
+                size="xs"
+                onClick={handleDelete}
+                disabled={deleteRoaster.isPending}
+              >
+                Confirmar
+              </Button>
+              <Button variant="ghost" size="xs" onClick={() => setConfirming(false)}>
+                Cancelar
+              </Button>
+            </div>
+          ) : (
+            <Button variant="ghost" size="icon-sm" onClick={handleDelete}>
+              <Trash2 className="size-3.5 text-destructive" />
+            </Button>
+          )}
+        </div>
+      </div>
 
       {/* Header */}
-      <div className="space-y-1">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="text-2xl font-semibold leading-tight">{roaster.name}</h1>
-          <div className="flex shrink-0 items-center gap-1">
-            <Link
-              href={`/roasters/${id}/edit`}
-              className={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}
-            >
-              <Pencil className="size-3.5" />
-            </Link>
-            {confirming ? (
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="destructive"
-                  size="xs"
-                  onClick={handleDelete}
-                  disabled={deleteRoaster.isPending}
-                >
-                  Confirmar
-                </Button>
-                <Button variant="ghost" size="xs" onClick={() => setConfirming(false)}>
-                  Cancelar
-                </Button>
-              </div>
-            ) : (
-              <Button variant="ghost" size="icon-sm" onClick={handleDelete}>
-                <Trash2 className="size-3.5 text-destructive" />
-              </Button>
-            )}
-          </div>
-        </div>
+      <div className="space-y-1.5">
+        <h1 className="font-heading text-2xl font-semibold leading-tight">{roaster.name}</h1>
         {roaster.country && (
           <p className="text-sm text-muted-foreground">{roaster.country}</p>
         )}
@@ -109,7 +114,7 @@ export default function RoasterPage() {
           </a>
         )}
         {roaster.notes && (
-          <p className="text-sm text-muted-foreground pt-1">{roaster.notes}</p>
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{roaster.notes}</p>
         )}
       </div>
 
@@ -129,7 +134,7 @@ export default function RoasterPage() {
         {loadingCoffees && (
           <div className="space-y-3">
             {Array.from({ length: 2 }).map((_, i) => (
-              <Skeleton key={i} className="h-20 w-full rounded-xl" />
+              <CoffeeCardSkeleton key={i} />
             ))}
           </div>
         )}
@@ -146,40 +151,9 @@ export default function RoasterPage() {
           </div>
         )}
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           {coffees?.map((coffee) => (
-            <Link key={coffee.id} href={`/coffees/${coffee.id}`} className="group block">
-              <Card className="transition-colors hover:bg-muted/40">
-                <CardContent className="flex items-center justify-between gap-3 py-3">
-                  <div className="min-w-0 space-y-0.5">
-                    <p className="truncate font-medium text-sm">{coffee.name}</p>
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {coffee.origin && (
-                        <span className="text-xs text-muted-foreground">{coffee.origin}</span>
-                      )}
-                      {coffee.process && (
-                        <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                          {coffee.process}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  <div className="shrink-0 flex items-center gap-1 text-sm text-muted-foreground">
-                    {coffee.rating != null && (
-                      <span className="flex items-center gap-0.5">
-                        <Star className="size-3.5 fill-amber-400 text-amber-400" />
-                        {coffee.rating.toFixed(1)}
-                      </span>
-                    )}
-                    {coffee.priceCents != null && (
-                      <span className="text-xs">
-                        {(coffee.priceCents / 100).toFixed(2)} €
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+            <CoffeeCard key={coffee.id} coffee={coffee} />
           ))}
         </div>
       </div>
