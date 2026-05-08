@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -69,6 +70,7 @@ export function RoasterForm({ defaultValues, onSubmit, submitLabel = 'Guardar', 
 
       <div className="flex gap-2 pt-2">
         <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="size-4 animate-spin" />}
           {isSubmitting ? 'Guardando…' : submitLabel}
         </Button>
         {onCancel && (

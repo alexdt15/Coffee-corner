@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { Loader2 } from 'lucide-react'
 import { urlOrEmpty } from '@/lib/validation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -166,6 +167,7 @@ export function CoffeeForm({ defaultValues, onSubmit, submitLabel = 'Guardar', o
 
       <div className="flex gap-2 pt-2">
         <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="size-4 animate-spin" />}
           {isSubmitting ? 'Guardando…' : submitLabel}
         </Button>
         {onCancel && (

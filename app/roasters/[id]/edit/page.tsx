@@ -41,7 +41,7 @@ export default function EditRoasterPage() {
         <ChevronLeft className="size-4" />
         {roaster.name}
       </Link>
-      <h1 className="text-xl font-semibold">Editar tostador</h1>
+      <h1 className="font-heading text-2xl font-semibold leading-tight">Editar tostador</h1>
       <RoasterForm
         defaultValues={{
           name: roaster.name,

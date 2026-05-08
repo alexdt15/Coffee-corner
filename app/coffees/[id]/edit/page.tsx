@@ -62,7 +62,7 @@ export default function EditCoffeePage() {
         <ChevronLeft className="size-4" />
         {coffee.name}
       </Link>
-      <h1 className="text-xl font-semibold">Editar café</h1>
+      <h1 className="font-heading text-2xl font-semibold leading-tight">Editar café</h1>
       <CoffeeForm
         defaultValues={coffee}
         submitLabel="Guardar cambios"

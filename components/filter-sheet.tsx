@@ -38,7 +38,7 @@ function Chip({
     <button
       onClick={onClick}
       className={cn(
-        'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+        'rounded-sm border px-2.5 py-1 text-xs font-medium transition-colors',
         active
           ? 'border-primary bg-primary text-primary-foreground'
           : 'border-border bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground',
@@ -155,7 +155,7 @@ export function FilterSheet({ open, onOpenChange, options, current, onApply }: F
                   key={r}
                   onClick={() => setMinRating(r)}
                   className={cn(
-                    'flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+                    'flex items-center gap-1 rounded-sm border px-2.5 py-1 text-xs font-medium transition-colors',
                     draft.minRating === r
                       ? 'border-primary bg-primary text-primary-foreground'
                       : 'border-border bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground',

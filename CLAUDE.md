@@ -142,23 +142,30 @@ Decisiones tomadas:
 - [x] Tres estados vacíos diferenciados: sin cafés / sin resultados de búsqueda / filtros sin matches
 - [x] `/coffees/new` acepta entrada sin `?roasterId=`: selector de tostador dinámico (auto-selecciona si hay uno solo); mensaje guiado si no hay tostadores
 
-#### Bloque D — Tab Tostadores
+#### Bloque D — Tab Tostadores ✓
 
-- [ ] `<RoasterCard>` restyling para coherencia visual
-- [ ] Búsqueda aplicada (mismo `q`, sobre nombre / país / notes)
-- [ ] Skeletons + estado vacío
+- [x] `<RoasterCard>` restyling para coherencia visual
+- [x] Búsqueda aplicada (mismo `q`, sobre nombre / país / notes)
+- [x] Skeletons + estado vacío
 
-#### Bloque E — Detalles
+#### Bloque E — Detalles ✓
 
-- [ ] `/coffees/[id]` rediseño: hero con avatar grande, jerarquía (nombre, tostador, rating), notas como pills, review destacado, CTA "Ver en la web"
-- [ ] `/roasters/[id]` restyling mínimo: header del tostador + lista usando la misma `<CoffeeCard>`
+- [x] `/coffees/[id]` rediseño: hero con avatar grande, jerarquía (nombre, tostador, rating), notas como pills, review destacado, CTA "Ver en la web"
+- [x] `/roasters/[id]` restyling mínimo: header del tostador + lista usando la misma `<CoffeeCard>`
 
-#### Bloque F — Polish
+#### Bloque F — Polish ✓
 
-- [ ] Forms (RHF + shadcn) — pase de consistencia visual con los nuevos tokens
-- [ ] Toasts en todas las mutations (create / update / delete) con copy en español
-- [ ] Spinner en submits + estados disabled correctos
-- [ ] QA mobile: viewport real, safe-areas, scroll, bottom nav no tape contenido
+- [x] Forms (RHF + shadcn) — pase de consistencia visual con los nuevos tokens
+- [x] Toasts en todas las mutations (create / update / delete) con copy en español
+- [x] Spinner en submits + estados disabled correctos
+- [x] QA mobile: viewport real, safe-areas, scroll, bottom nav no tape contenido
+
+#### Bloque G — Design language refinement ✓
+
+- [x] Inputs/Textareas: `rounded-sm` (≈9.6px), `h-10` (40px touch target), `ring-1 ring-ring/25` en focus — geometría Apple-like
+- [x] Select del formulario de nuevo café alineado con Input
+- [x] Button base: `rounded-sm` + `ring-1 ring-ring/25` — consistencia en toda la UI
+- [x] FilterSheet chips (origen/proceso) y botones de rating: `rounded-sm`, padding proporcional al texto
 
 #### Pendientes / Refinements
 

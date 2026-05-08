@@ -74,7 +74,7 @@ function NewCoffeeForm() {
               setSelectedRoasterId(e.target.value)
               setRoasterError(false)
             }}
-            className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-10 w-full rounded-sm border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/25"
           >
             <option value="" disabled>Selecciona un tostador…</option>
             {roasters.map((r) => (
@@ -121,7 +121,7 @@ export default function NewCoffeePage() {
         <ChevronLeft className="size-4" />
         Volver
       </button>
-      <h1 className="text-xl font-semibold">Nuevo café</h1>
+      <h1 className="font-heading text-2xl font-semibold leading-tight">Nuevo café</h1>
       <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
         <NewCoffeeForm />
       </Suspense>

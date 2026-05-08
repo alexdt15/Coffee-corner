@@ -17,7 +17,7 @@ export default function NewRoasterPage() {
         <ChevronLeft className="size-4" />
         Tostadores
       </Link>
-      <h1 className="text-xl font-semibold">Nuevo tostador</h1>
+      <h1 className="font-heading text-2xl font-semibold leading-tight">Nuevo tostador</h1>
       <RoasterForm
         submitLabel="Crear tostador"
         onCancel={() => router.back()}
