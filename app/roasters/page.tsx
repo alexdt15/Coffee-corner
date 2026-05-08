@@ -1,25 +1,35 @@
 'use client'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
-import { Plus, Star, ChevronRight } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Plus } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from '@/lib/utils'
+import { RoasterCard, RoasterCardSkeleton } from '@/components/roaster-card'
 import { useRoasters } from '@/lib/hooks'
+import { cn } from '@/lib/utils'
+import type { RoasterWithStats } from '@/lib/hooks'
 
-export default function RoastersPage() {
+function filterRoasters(roasters: RoasterWithStats[], q: string): RoasterWithStats[] {
+  if (!q) return roasters
+  const needle = q.toLowerCase()
+  return roasters.filter((r) => {
+    const haystack = [r.name, r.country, r.notes].filter(Boolean).join(' ').toLowerCase()
+    return haystack.includes(needle)
+  })
+}
+
+function RoastersContent() {
+  const searchParams = useSearchParams()
+  const q = searchParams.get('q') ?? ''
+
   const { data: roasters, isLoading, error } = useRoasters()
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-6 w-28" />
-          <Skeleton className="h-8 w-20" />
-        </div>
+      <div className="space-y-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <Skeleton key={i} className="h-24 w-full rounded-xl" />
+          <RoasterCardSkeleton key={i} />
         ))}
       </div>
     )
@@ -33,9 +43,11 @@ export default function RoastersPage() {
     )
   }
 
+  const filtered = filterRoasters(roasters ?? [], q)
+
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
+    <>
+      <div className="mb-5 flex items-center justify-between">
         <h1 className="text-xl font-semibold">Tostadores</h1>
         <Link href="/roasters/new" className={buttonVariants({ size: 'sm' })}>
           <Plus className="size-4" />
@@ -55,37 +67,33 @@ export default function RoastersPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {roasters?.map((roaster) => (
-          <Link key={roaster.id} href={`/roasters/${roaster.id}`} className="group">
-            <Card className="transition-colors hover:bg-muted/40">
-              <CardHeader className="pb-1">
-                <div className="flex items-start justify-between gap-2">
-                  <CardTitle className="text-base leading-snug">{roaster.name}</CardTitle>
-                  <ChevronRight className="mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                </div>
-                {roaster.country && (
-                  <p className="text-sm text-muted-foreground">{roaster.country}</p>
-                )}
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <span>
-                    {roaster.coffeeCount}{' '}
-                    {Number(roaster.coffeeCount) === 1 ? 'café' : 'cafés'}
-                  </span>
-                  {roaster.avgRating && (
-                    <span className="flex items-center gap-1">
-                      <Star className="size-3.5 fill-primary text-primary" />
-                      {parseFloat(roaster.avgRating).toFixed(1)}
-                    </span>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
+      {roasters && roasters.length > 0 && filtered.length === 0 && q && (
+        <div className="flex flex-col items-center py-24 text-center">
+          <p className="text-sm text-muted-foreground">Sin resultados para esa búsqueda.</p>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {filtered.map((roaster) => (
+          <RoasterCard key={roaster.id} roaster={roaster} />
         ))}
       </div>
-    </div>
+    </>
+  )
+}
+
+export default function RoastersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="space-y-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <RoasterCardSkeleton key={i} />
+          ))}
+        </div>
+      }
+    >
+      <RoastersContent />
+    </Suspense>
   )
 }
